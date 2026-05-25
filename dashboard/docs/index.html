@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentação Local · XAMPP SENAI TDS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #003DA5; --red: #E8192C; --dark: #001F5A;
+      --light: #EBF2FF;
+      --g50: #F8F9FC; --g100: #F1F3F8; --g200: #DDE1EC;
+      --g400: #9BA3B8; --g600: #5A6278; --g900: #0F1629;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0,31,90,.08);
+      --shadow-hover: 0 8px 28px rgba(0,31,90,.16);
+    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--g50); color: var(--g900); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* TOPBAR */
+    .topbar { background: var(--dark); height: 60px; padding: 0 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; box-shadow: 0 1px 0 rgba(255,255,255,.07), 0 4px 16px rgba(0,0,0,.3); position: sticky; top: 0; z-index: 100; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+    .brand-pill { background: var(--red); color: #fff; font-weight: 800; font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 5px; }
+    .brand-name { color: #fff; font-size: .9rem; font-weight: 600; opacity: .95; }
+    .brand-sep { color: rgba(255,255,255,.25); font-size: 1.1rem; margin: 0 2px; }
+    .topnav { display: flex; align-items: center; gap: .25rem; }
+    .topnav a { color: rgba(255,255,255,.7); text-decoration: none; font-size: .825rem; font-weight: 500; padding: .4rem .75rem; border-radius: 6px; transition: background .15s, color .15s; white-space: nowrap; }
+    .topnav a:hover { background: rgba(0,0,0,.25); color: #fff; }
+    .topnav a.active { background: rgba(0,0,0,.32); color: #fff; font-weight: 700; }
+    .topnav .nav-sep { width: 1px; height: 20px; background: rgba(255,255,255,.15); margin: 0 .25rem; }
+    .topnav a.nav-ext { color: rgba(255,255,255,.55); font-size: .775rem; }
+    .topnav a.nav-ext:hover { color: rgba(255,255,255,.9); }
+
+    /* HERO */
+    .hero { background: linear-gradient(140deg, var(--dark) 0%, #0B3480 55%, #1552CC 100%); padding: 3rem 2.5rem 2.75rem; color: #fff; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(232,25,44,.15) 0%, transparent 70%); }
+    .hero-inner { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; }
+    .hero-tag { display: inline-block; background: var(--red); color: #fff; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .7rem; border-radius: 5px; margin-bottom: 1rem; }
+    .hero h1 { font-size: 2rem; font-weight: 800; }
+    .hero p { color: rgba(255,255,255,.65); margin-top: .5rem; font-size: .9rem; }
+
+    /* MAIN */
+    main { flex: 1; max-width: 1080px; width: 100%; margin: 0 auto; padding: 2.5rem 2rem; }
+    .section-label { font-size: .65rem; letter-spacing: .14em; text-transform: uppercase; color: var(--g400); font-weight: 700; margin-bottom: 1rem; margin-top: 2rem; }
+    .section-label:first-child { margin-top: 0; }
+
+    /* GRID */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: .5rem; }
+
+    .doc-card {
+      background: #fff;
+      border: 1px solid var(--g200);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      box-shadow: var(--shadow);
+      transition: box-shadow .2s, transform .2s;
+    }
+    .doc-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+
+    .doc-ico { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .doc-body { flex: 1; }
+    .doc-body h3 { font-size: .84rem; font-weight: 700; color: var(--g900); margin-bottom: .2rem; }
+    .doc-body p { font-size: .775rem; color: var(--g600); line-height: 1.4; }
+    .doc-formats { display: flex; gap: .4rem; margin-top: .5rem; }
+    .doc-badge { font-size: .68rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .05em; }
+    .badge-html { background: #E3F2FD; color: #1565C0; }
+    .badge-pdf  { background: #FEE8EA; color: #C0001A; }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: rgba(255,255,255,.4); padding: 1.1rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; font-size: .75rem; }
+    footer a { color: rgba(255,255,255,.6); text-decoration: none; }
+    footer a:hover { color: #fff; }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 0 1.25rem; }
+      .brand-name, .brand-sep { display: none; }
+      .topnav a { padding: .35rem .55rem; font-size: .78rem; }
+      .hero { padding: 2.5rem 1.25rem 2rem; }
+      .hero h1 { font-size: 1.55rem; }
+      main { padding: 1.75rem 1.25rem; }
+      .grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/dashboard/">
+    <span class="brand-pill">SENAI</span>
+    <span class="brand-sep">/</span>
+    <span class="brand-name">Ambiente de Desenvolvimento</span>
+  </a>
+  <nav class="topnav">
+    <a href="/dashboard/">Início</a>
+    <a href="/dashboard/senai.html">SENAI TDS</a>
+    <div class="nav-sep"></div>
+    <a href="/phpmyadmin/" class="nav-ext" target="_blank">phpMyAdmin ↗</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">Offline</span>
+    <h1>Documentação Local</h1>
+    <p>Guias HOW-TO do XAMPP disponíveis diretamente no seu servidor local, sem precisar de internet.</p>
+  </div>
+</div>
+
+<main>
+
+  <p class="section-label">Banco de Dados</p>
+  <div class="grid">
+
+    <a class="doc-card" href="backup-restore-mysql.html">
+      <div class="doc-ico" style="background:var(--light)">🗄️</div>
+      <div class="doc-body">
+        <h3>Backup e Restore MySQL/MariaDB</h3>
+        <p>Como fazer backup e restaurar bancos de dados MySQL e MariaDB.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="reset-mysql-password.html">
+      <div class="doc-ico" style="background:#FEE8EA">🔑</div>
+      <div class="doc-body">
+        <h3>Redefinir senha root do MySQL</h3>
+        <p>Recupere o acesso ao banco redefinindo a senha do usuário root.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="change-mysql-temp-dir.html">
+      <div class="doc-ico" style="background:#FFF3E0">📁</div>
+      <div class="doc-body">
+        <h3>Alterar diretório temporário MySQL</h3>
+        <p>Configure o diretório de arquivos temporários do MySQL.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="use-sqlite.html">
+      <div class="doc-ico" style="background:#E8F5E9">💾</div>
+      <div class="doc-body">
+        <h3>Usar SQLite com PHP</h3>
+        <p>Configure e use o SQLite como banco de dados leve em projetos PHP.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <p class="section-label">Servidor e Rede</p>
+  <div class="grid">
+
+    <a class="doc-card" href="configure-vhosts.html">
+      <div class="doc-ico" style="background:#F3E8FF">🌐</div>
+      <div class="doc-body">
+        <h3>Configurar Virtual Hosts</h3>
+        <p>Crie múltiplos domínios locais com Virtual Hosts no Apache.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="configure-wildcard-subdomains.html">
+      <div class="doc-ico" style="background:var(--light)">🔀</div>
+      <div class="doc-body">
+        <h3>Subdomínios com Wildcard</h3>
+        <p>Configure subdomínios dinâmicos baseados em wildcard no Apache.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="transfer-files-ftp.html">
+      <div class="doc-ico" style="background:#FFF3E0">📤</div>
+      <div class="doc-body">
+        <h3>Configurar Acesso FTP</h3>
+        <p>Configure o FileZilla FTP Server incluído no XAMPP.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="access-phpmyadmin-remotely.html">
+      <div class="doc-ico" style="background:#FEE8EA">🔓</div>
+      <div class="doc-body">
+        <h3>Acesso Remoto ao phpMyAdmin</h3>
+        <p>Como habilitar acesso externo ao phpMyAdmin de forma controlada.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="auto-start-xampp.html">
+      <div class="doc-ico" style="background:#E8F5E9">⚡</div>
+      <div class="doc-body">
+        <h3>Inicialização Automática</h3>
+        <p>Configure o XAMPP para iniciar automaticamente com o Windows.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="troubleshoot-apache.html">
+      <div class="doc-ico" style="background:#FEE8EA">🔧</div>
+      <div class="doc-body">
+        <h3>Solucionar Problemas do Apache</h3>
+        <p>Diagnóstico e solução dos erros mais comuns na inicialização.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <p class="section-label">PHP e Desenvolvimento</p>
+  <div class="grid">
+
+    <a class="doc-card" href="send-mail.html">
+      <div class="doc-ico" style="background:var(--light)">✉️</div>
+      <div class="doc-body">
+        <h3>Enviar E-mail com PHP</h3>
+        <p>Configure o sendmail e a função mail() do PHP.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="increase-php-file-upload-limit.html">
+      <div class="doc-ico" style="background:#F3E8FF">📎</div>
+      <div class="doc-body">
+        <h3>Aumentar Limite de Upload PHP</h3>
+        <p>Aumente o tamanho máximo de arquivos para upload via PHP.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="activate-use-xdebug.html">
+      <div class="doc-ico" style="background:#E8F5E9">🐛</div>
+      <div class="doc-body">
+        <h3>Ativar e Usar Xdebug</h3>
+        <p>Configure o Xdebug para depurar aplicações PHP com breakpoints.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="use-different-php-version.html">
+      <div class="doc-ico" style="background:#FFF3E0">🐘</div>
+      <div class="doc-body">
+        <h3>Usar Versão Diferente do PHP</h3>
+        <p>Alterne entre versões do PHP instaladas no XAMPP.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="use-php-fcgi.html">
+      <div class="doc-ico" style="background:var(--light)">⚙️</div>
+      <div class="doc-body">
+        <h3>Executar PHP via FastCGI</h3>
+        <p>Configure o PHP para rodar sob FastCGI.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="deploy-git-app.html">
+      <div class="doc-ico" style="background:#E8F5E9">📦</div>
+      <div class="doc-body">
+        <h3>Deploy com Git</h3>
+        <p>Implante uma aplicação usando Git diretamente no Apache.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <p class="section-label">Frameworks e Extras</p>
+  <div class="grid">
+
+    <a class="doc-card" href="create-framework-project-zf1.html">
+      <div class="doc-ico" style="background:#F3E8FF">🏗️</div>
+      <div class="doc-body">
+        <h3>Projeto Zend Framework 1.x</h3>
+        <p>Inicie um novo projeto com o Zend Framework versão 1.x.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="create-framework-project-zf2.html">
+      <div class="doc-ico" style="background:#F3E8FF">🏗️</div>
+      <div class="doc-body">
+        <h3>Projeto Zend Framework 2.x</h3>
+        <p>Inicie um novo projeto com o Zend Framework versão 2.x.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+    <a class="doc-card" href="configure-use-tomcat.html">
+      <div class="doc-ico" style="background:#FFF3E0">☕</div>
+      <div class="doc-body">
+        <h3>Configurar Apache Tomcat</h3>
+        <p>Configure e utilize o Apache Tomcat para aplicações Java no XAMPP.</p>
+        <div class="doc-formats">
+          <span class="doc-badge badge-html">HTML</span>
+          <span class="doc-badge badge-pdf">PDF</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+</main>
+
+<footer>
+  <span><a href="/dashboard/">← Início</a> · <a href="/dashboard/howto.html">HOW-TO</a> · Documentação Local XAMPP</span>
+  <span>Visual por <a href="https://github.com/icrcode" target="_blank">icrcode</a></span>
+</footer>
+
+</body>
+</html>

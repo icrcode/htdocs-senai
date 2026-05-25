@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ambiente de Desenvolvimento - SENAI</title>
+  <style>
+    /* ── RESET ── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── TOKENS ── */
+    :root {
+      --blue: #003DA5;
+      --red: #E8192C;
+      --dark: #001F5A;
+      --light: #EBF2FF;
+      --g50: #F8F9FC;
+      --g100: #F1F3F8;
+      --g200: #DDE1EC;
+      --g400: #9BA3B8;
+      --g600: #5A6278;
+      --g900: #0F1629;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0, 31, 90, .08);
+      --shadow-hover: 0 8px 28px rgba(0, 31, 90, .16);
+    }
+
+    /* ── BASE ── */
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--g50);
+      color: var(--g900);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--dark);
+      height: 60px;
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .07), 0 4px 16px rgba(0, 0, 0, .3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* brand */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-pill {
+      background: var(--red);
+      color: #fff;
+      font-weight: 800;
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 5px;
+    }
+
+    .brand-name {
+      color: #fff;
+      font-size: .9rem;
+      font-weight: 600;
+      opacity: .95;
+    }
+
+    .brand-sep {
+      color: rgba(255, 255, 255, .25);
+      font-size: 1.1rem;
+      margin: 0 2px;
+    }
+
+    /* nav */
+    .topnav {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+    }
+
+    .topnav a {
+      color: rgba(255, 255, 255, .7);
+      text-decoration: none;
+      font-size: .825rem;
+      font-weight: 500;
+      padding: .4rem .75rem;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+
+    .topnav a:hover {
+      background: rgba(0, 0, 0, .25);
+      color: #fff;
+    }
+
+    .topnav a.active {
+      background: rgba(0, 0, 0, .32);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .topnav .nav-sep {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, .15);
+      margin: 0 .25rem;
+    }
+
+    .topnav a.nav-ext {
+      color: rgba(255, 255, 255, .55);
+      font-size: .775rem;
+    }
+
+    .topnav a.nav-ext:hover {
+      color: rgba(255, 255, 255, .9);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(140deg, var(--dark) 0%, #0B3480 55%, #1552CC 100%);
+      padding: 4rem 2.5rem 3.5rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(232, 25, 44, .18) 0%, transparent 70%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .5);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: .75rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: #FF6B7A;
+    }
+
+    .hero-sub {
+      font-size: .975rem;
+      color: rgba(255, 255, 255, .65);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: .875rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .65rem 1.35rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: .85rem;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .3);
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, .5);
+    }
+
+    /* ── STATUS STRIP ── */
+    .status {
+      background: #fff;
+      border-bottom: 1px solid var(--g200);
+      padding: 1%;
+      display: flex;
+      gap: 1.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .status-chip {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      font-size: .78rem;
+      color: var(--g600);
+      font-weight: 500;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, .18);
+      animation: pulse 2.2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, .18);
+      }
+
+      50% {
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, .06);
+      }
+    }
+
+    .status-info {
+      margin-left: auto;
+      font-size: .75rem;
+      color: var(--g400);
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    .section-label {
+      font-size: .65rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--g400);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    /* ── BANNER ── */
+    .banner {
+      background: var(--light);
+      border: 1px solid rgba(0, 61, 165, .2);
+      border-left: 4px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .875rem;
+      margin-bottom: 2rem;
+    }
+
+    .banner-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .banner p {
+      font-size: .825rem;
+      color: var(--dark);
+      line-height: 1.55;
+    }
+
+    .banner strong {
+      font-weight: 700;
+    }
+
+    .banner a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .banner a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── CARDS ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--g200);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      box-shadow: var(--shadow);
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .card-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .card h3 {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--g900);
+    }
+
+    .card p {
+      font-size: .775rem;
+      color: var(--g600);
+      line-height: 1.5;
+    }
+
+    .card-cta {
+      margin-top: auto;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+
+    .card-featured {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--blue) 100%);
+      border-color: transparent;
+    }
+
+    .card-featured h3,
+    .card-featured p {
+      color: #fff;
+    }
+
+    .card-featured p {
+      opacity: .75;
+    }
+
+    .card-featured .card-cta {
+      color: rgba(255, 255, 255, .9);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255, 255, 255, .4);
+      padding: 1.1rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+      font-size: .75rem;
+    }
+
+    footer a {
+      color: rgba(255, 255, 255, .6);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .topbar {
+        padding: 0 1.25rem;
+      }
+
+      .brand-name,
+      .brand-sep {
+        display: none;
+      }
+
+      .topnav a {
+        padding: .35rem .55rem;
+        font-size: .78rem;
+      }
+
+      .hero {
+        padding: 3rem 1.25rem 2.5rem;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem;
+      }
+
+      main {
+        padding: 1.75rem 1.25rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a class="brand" href="/dashboard/">
+      <img src="../img/senai-marca.png" alt="XAMPP Logo" width="200">
+      <span class="brand-sep">/</span>
+      <span class="brand-name">Ambiente de Desenvolvimento</span>
+    </a>
+    <nav class="topnav">
+      <a href="/dashboard/" class="active">Início</a>
+      <a href="/dashboard/senai.html">SENAI TDS</a>
+      <div class="nav-sep"></div>
+      <a href="/phpmyadmin/" class="nav-ext" target="_blank">phpMyAdmin ↗</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">XAMPP · Apache · PHP · MariaDB</p>
+      <h1>Bem-vindo ao<br><em>Ambiente Local</em></h1>
+      <p class="hero-sub">
+        Servidor de desenvolvimento configurado para o curso
+        <strong style="color:#fff">Técnico em Desenvolvimento de Sistemas</strong> — SENAI.
+      </p>
+      <div class="hero-btns">
+        <a class="btn btn-red" href="/dashboard/senai.html">Área SENAI TDS</a>
+        <a class="btn btn-ghost" href="/phpmyadmin/" target="_blank">phpMyAdmin</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status">
+    <div class="status-chip"><span class="dot"></span>Apache Ativo</div>
+    <div class="status-chip"><span class="dot"></span>PHP 8.0</div>
+    <div class="status-chip"><span class="dot"></span>MariaDB online</div>
+    <span class="status-info">XAMPP 8.0.30 · Windows</span>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <div class="banner">
+      <span class="banner-icon">🎓</span>
+      <p>
+        <strong>Curso Técnico em Desenvolvimento de Sistemas · SENAI</strong><br>
+        Use este ambiente para praticar PHP, HTML, CSS, JavaScript e banco de dados nas aulas.
+        <a href="/dashboard/senai.html">Ver recursos do curso →</a>
+      </p>
+    </div>
+
+    <p class="section-label">Acesso Rápido</p>
+    <div class="grid">
+
+      <a class="card card-featured" href="/dashboard/senai.html">
+        <div class="card-ico" style="background:rgba(255,255,255,.15)">🎓</div>
+        <h3>SENAI · TDS</h3>
+        <p>Área do curso com links para o portal SESI SENAI e recursos de desenvolvimento.</p>
+        <span class="card-cta">Acessar →</span>
+      </a>
+
+      <a class="card" href="/phpmyadmin/" target="_blank">
+        <div class="card-ico" style="background:#FFF3E0">🗄️</div>
+        <h3>phpMyAdmin</h3>
+        <p>Gerencie bancos de dados, tabelas e consultas SQL via interface visual.</p>
+        <span class="card-cta">Abrir →</span>
+      </a>
+
+      <!-- <a class="card" href="/dashboard/howto.html">
+        <div class="card-ico" style="background:#E8F5E9">📖</div>
+        <h3>HOW-TO Guides</h3>
+        <p>Guias passo a passo para configurar o ambiente e iniciar seus projetos.</p>
+        <span class="card-cta">Ver guias →</span>
+      </a>
+
+      <a class="card" href="/dashboard/faq.html">
+        <div class="card-ico" style="background:#F3E8FF">❓</div>
+        <h3>FAQ</h3>
+        <p>Perguntas frequentes sobre instalação, configuração e uso do XAMPP.</p>
+        <span class="card-cta">Ver FAQ →</span>
+      </a> -->
+
+      <a class="card" href="/dashboard/docs/">
+        <div class="card-ico" style="background:#E0F7FA">📄</div>
+        <h3>Documentação Local</h3>
+        <p>HOW-TOs avançados de configuração do XAMPP e PHP disponíveis offline.</p>
+        <span class="card-cta">Ver docs →</span>
+      </a>
+
+    </div>
+
+    <p class="section-label">Referências Externas</p>
+    <div class="grid">
+
+      <a class="card" href="https://www.php.net/manual/pt_BR/" target="_blank">
+        <div class="card-ico" style="background:#EDE7F6">🐘</div>
+        <h3>Manual do PHP</h3>
+        <p>Documentação oficial do PHP em português com referência completa de funções.</p>
+        <span class="card-cta">Abrir ↗</span>
+      </a>
+
+      <a class="card" href="https://developer.mozilla.org/pt-BR/" target="_blank">
+        <div class="card-ico" style="background:#E3F2FD">🌐</div>
+        <h3>MDN Web Docs</h3>
+        <p>Referência de HTML, CSS e JavaScript em português pelo Mozilla.</p>
+        <span class="card-cta">Abrir ↗</span>
+      </a>
+
+      <a class="card" href="https://www.w3schools.com/php/" target="_blank">
+        <div class="card-ico" style="background:#E8F5E9">📝</div>
+        <h3>W3Schools PHP</h3>
+        <p>Tutoriais interativos de PHP para praticar os conceitos do curso.</p>
+        <span class="card-cta">Abrir ↗</span>
+      </a>
+
+      <a class="card" href="https://git-scm.com/doc" target="_blank">
+        <div class="card-ico" style="background:#FFF3E0">📦</div>
+        <h3>Git Docs</h3>
+        <p>Documentação oficial do Git para versionamento dos seus projetos.</p>
+        <span class="card-cta">Abrir ↗</span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>XAMPP para Windows · <a href="https://www.apachefriends.org" target="_blank">Apache Friends</a> · Ambiente
+      SENAI TDS</span>
+    <span>Visual por <a href="https://github.com/icrcode" target="_blank">icrcode</a></span>
+  </footer>
+
+</body>
+
+</html>

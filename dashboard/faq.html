@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ambiente de Desenvolvimento - SENAI</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --blue: #003DA5;
+      --red: #E8192C;
+      --dark: #001F5A;
+      --light: #EBF2FF;
+      --g50: #F8F9FC;
+      --g100: #F1F3F8;
+      --g200: #DDE1EC;
+      --g400: #9BA3B8;
+      --g600: #5A6278;
+      --g900: #0F1629;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0, 31, 90, .08);
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--g50);
+      color: var(--g900);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--dark);
+      height: 60px;
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .07), 0 4px 16px rgba(0, 0, 0, .3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .brand-pill {
+      background: var(--red);
+      color: #fff;
+      font-weight: 800;
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 5px;
+    }
+
+    .brand-name {
+      color: #fff;
+      font-size: .9rem;
+      font-weight: 600;
+      opacity: .95;
+    }
+
+    .brand-sep {
+      color: rgba(255, 255, 255, .25);
+      font-size: 1.1rem;
+      margin: 0 2px;
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+    }
+
+    .topnav a {
+      color: rgba(255, 255, 255, .7);
+      text-decoration: none;
+      font-size: .825rem;
+      font-weight: 500;
+      padding: .4rem .75rem;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+
+    .topnav a:hover {
+      background: rgba(0, 0, 0, .25);
+      color: #fff;
+    }
+
+    .topnav a.active {
+      background: rgba(0, 0, 0, .32);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .topnav .nav-sep {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, .15);
+      margin: 0 .25rem;
+    }
+
+    .topnav a.nav-ext {
+      color: rgba(255, 255, 255, .55);
+      font-size: .775rem;
+    }
+
+    .topnav a.nav-ext:hover {
+      color: rgba(255, 255, 255, .9);
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(140deg, var(--dark) 0%, #0B3480 55%, #1552CC 100%);
+      padding: 3rem 2.5rem 2.75rem;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(232, 25, 44, .15) 0%, transparent 70%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .3rem .7rem;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, .65);
+      margin-top: .5rem;
+      font-size: .9rem;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+
+    .section-label {
+      font-size: .65rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--g400);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+    }
+
+    .section-label:first-child {
+      margin-top: 0;
+    }
+
+    /* ACCORDION */
+    details {
+      background: #fff;
+      border: 1px solid var(--g200);
+      border-radius: var(--radius);
+      margin-bottom: .6rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    details[open] {
+      box-shadow: 0 4px 20px rgba(0, 31, 90, .12);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      font-size: .875rem;
+      color: var(--g900);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      list-style: none;
+      user-select: none;
+      transition: background .12s;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary:hover {
+      background: var(--g100);
+    }
+
+    details[open]>summary {
+      background: var(--light);
+      color: var(--blue);
+      border-bottom: 1px solid var(--g200);
+    }
+
+    .summary-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+      background: var(--g100);
+    }
+
+    details[open]>summary .summary-icon {
+      background: var(--light);
+    }
+
+    .summary-text {
+      flex: 1;
+    }
+
+    .summary-chevron {
+      font-size: .65rem;
+      color: var(--g400);
+      flex-shrink: 0;
+      transition: transform .2s;
+    }
+
+    details[open]>summary .summary-chevron {
+      transform: rotate(180deg);
+      color: var(--blue);
+    }
+
+    .faq-body {
+      padding: 1.25rem 1.25rem 1.35rem;
+    }
+
+    .faq-body p {
+      font-size: .845rem;
+      color: var(--g600);
+      line-height: 1.7;
+      margin-bottom: .75rem;
+    }
+
+    .faq-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .faq-body ul,
+    .faq-body ol {
+      margin: .4rem 0 .75rem 1.2rem;
+    }
+
+    .faq-body li {
+      font-size: .845rem;
+      color: var(--g600);
+      line-height: 1.6;
+      margin-bottom: .3rem;
+    }
+
+    .faq-body code {
+      background: var(--g100);
+      border: 1px solid var(--g200);
+      border-radius: 5px;
+      padding: .15rem .45rem;
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: .78rem;
+      color: var(--dark);
+      word-break: break-all;
+    }
+
+    .faq-body strong {
+      color: var(--g900);
+      font-weight: 700;
+    }
+
+    .faq-body a {
+      color: var(--blue);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .faq-body a:hover {
+      text-decoration: underline;
+    }
+
+    .faq-body img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: .5rem;
+      border: 1px solid var(--g200);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      color: rgba(255, 255, 255, .4);
+      padding: 1.1rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+      font-size: .75rem;
+    }
+
+    footer a {
+      color: rgba(255, 255, 255, .6);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        padding: 0 1.25rem;
+      }
+
+      .brand-name,
+      .brand-sep {
+        display: none;
+      }
+
+      .topnav a {
+        padding: .35rem .55rem;
+        font-size: .78rem;
+      }
+
+      .hero {
+        padding: 2.5rem 1.25rem 2rem;
+      }
+
+      .hero h1 {
+        font-size: 1.55rem;
+      }
+
+      main {
+        padding: 1.75rem 1.25rem;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="/dashboard/">
+      <span class="brand-pill">SENAI</span>
+      <span class="brand-sep">/</span>
+      <span class="brand-name">Ambiente de Desenvolvimento</span>
+    </a>
+    <nav class="topnav">
+      <a href="/dashboard/">Início</a>
+      <a href="/dashboard/senai.html">SENAI TDS</a>
+      <div class="nav-sep"></div>
+      <a href="/phpmyadmin/" class="nav-ext" target="_blank">phpMyAdmin ↗</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="hero-tag">Ajuda</span>
+      <h1>Perguntas Frequentes — Windows</h1>
+      <p>Dúvidas comuns sobre instalação, configuração e uso do XAMPP.</p>
+    </div>
+  </div>
+
+  <main>
+
+    <p class="section-label">Instalação e Configuração</p>
+
+    <details>
+      <summary>
+        <span class="summary-icon">📦</span>
+        <span class="summary-text">Como instalo o XAMPP?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>O XAMPP para Windows existe em três formatos:</p>
+        <ul>
+          <li><strong>Installer</strong> — a forma mais fácil. Execute o instalador e siga o assistente.</li>
+          <li><strong>ZIP</strong> — extraia na pasta desejada e execute <code>setup_xampp.bat</code>.</li>
+          <li><strong>7zip</strong> — versão compactada para conexões lentas.</li>
+        </ul>
+        <p>Após a instalação, use o <strong>XAMPP Control Panel</strong> para iniciar/parar Apache, MySQL, FileZilla e
+          Mercury.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🗄️</span>
+        <span class="summary-text">O XAMPP inclui MySQL ou MariaDB?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Desde as versões 5.5.30 e 5.6.14, o XAMPP usa <strong>MariaDB</strong> em vez de MySQL. Os comandos e
+          ferramentas são idênticos para ambos.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🚀</span>
+        <span class="summary-text">Como iniciar e parar o XAMPP?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Use o <strong>XAMPP Control Panel</strong>: <code>\xampp\xampp-control.exe</code></p>
+        <p>Ou via arquivos batch:</p>
+        <ul>
+          <li>Iniciar tudo: <code>\xampp\xampp_start.exe</code></li>
+          <li>Parar tudo: <code>\xampp\xampp_stop.exe</code></li>
+          <li>Apache iniciar/parar: <code>\xampp\apache_start.bat</code> / <code>apache_stop.bat</code></li>
+          <li>MySQL iniciar/parar: <code>\xampp\mysql_start.bat</code> / <code>mysql_stop.bat</code></li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">✅</span>
+        <span class="summary-text">Como verificar se tudo está funcionando?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Digite no navegador: <code>http://localhost/</code> ou <code>http://127.0.0.1/</code></p>
+        <p>Você verá a página inicial do XAMPP se tudo estiver correto.</p>
+        <img src="/dashboard/images/screenshots/xampp-windows-start.jpg" alt="XAMPP Start Page" />
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">⚙️</span>
+        <span class="summary-text">Como instalar um servidor como serviço do Windows?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Via XAMPP Control Panel (requer <strong>Administrador</strong>), ou pelos scripts:</p>
+        <ul>
+          <li>Instalar Apache: <code>\xampp\apache\apache_installservice.bat</code></li>
+          <li>Remover Apache: <code>\xampp\apache\apache_uninstallservice.bat</code></li>
+          <li>Instalar MySQL: <code>\xampp\mysql\mysql_installservice.bat</code></li>
+          <li>Remover MySQL: <code>\xampp\mysql\mysql_uninstallservice.bat</code></li>
+        </ul>
+      </div>
+    </details>
+
+    <p class="section-label">Segurança</p>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🔒</span>
+        <span class="summary-text">O XAMPP é pronto para produção?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p><strong>Não.</strong> O XAMPP é exclusivamente para desenvolvimento local. Vulnerabilidades padrão:</p>
+        <ol>
+          <li>O usuário MySQL root não tem senha.</li>
+          <li>O daemon MySQL é acessível via rede.</li>
+          <li>O ProFTPD usa senha pública "lampp".</li>
+          <li>Usuários padrão de Mercury e FileZilla são públicos.</li>
+        </ol>
+        <p>Para proteger, execute o console de segurança em <code>http://localhost/security/</code>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🔑</span>
+        <span class="summary-text">Como definir uma senha root no MySQL?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Abra o <strong>XAMPP Shell</strong> no Control Panel e execute:</p>
+        <p><code>mysqladmin.exe -u root password suasenha</code></p>
+        <p>Atualize também <code>\xampp\phpMyAdmin\config.inc.php</code> com a nova senha.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🌐</span>
+        <span class="summary-text">Como habilitar acesso remoto ao phpMyAdmin?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p><strong>Atenção:</strong> habilitar acesso externo é um risco de segurança. Use só em desenvolvimento local
+          controlado.</p>
+        <p>Edite <code>apache\conf\extra\httpd-xampp.conf</code> e substitua <code>Require local</code> por
+          <code>Require all granted</code> na diretiva do phpMyAdmin. Reinicie o Apache.</p>
+      </div>
+    </details>
+
+    <p class="section-label">Desenvolvimento e PHP</p>
+
+    <details>
+      <summary>
+        <span class="summary-icon">📁</span>
+        <span class="summary-text">Onde colocar os arquivos do meu projeto?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>O diretório raiz é <code>\xampp\htdocs</code>. Exemplos de acesso:</p>
+        <ul>
+          <li><code>htdocs\test.html</code> → <code>http://localhost/test.html</code></li>
+          <li><code>htdocs\test.php</code> → <code>http://localhost/test.php</code></li>
+          <li><code>htdocs\meu-projeto\</code> → <code>http://localhost/meu-projeto/</code></li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🐘</span>
+        <span class="summary-text">Por que mudanças no php.ini não surtiram efeito?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>O PHP pode estar usando um arquivo diferente. Verifique em <a href="/dashboard/phpinfo.php"
+            target="_blank">PHPInfo</a> qual arquivo está carregado (campo "Loaded Configuration File").</p>
+        <p><strong>Lembre:</strong> sempre reinicie o Apache após editar o <code>php.ini</code>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">✉️</span>
+        <span class="summary-text">Como configurar envio de e-mail com XAMPP?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>No <code>php.ini</code>, seção <code>[mail function]</code>, adicione:</p>
+        <p><code>sendmail_path = "\"C:\xampp\sendmail\sendmail.exe\" -t"</code></p>
+        <p>No <code>sendmail.ini</code>, seção <code>[sendmail]</code>:</p>
+        <p>
+          <code>smtp_server=smtp.gmail.com<br>smtp_port=465<br>smtp_ssl=auto<br>auth_username=seu@gmail.com<br>auth_password=sua-senha</code>
+        </p>
+        <p>Reinicie o Apache. Use <code>mail()</code> normalmente no PHP.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🔌</span>
+        <span class="summary-text">Como ativar extensões PHP (ex.: IMAP)?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Abra <code>\xampp\php\php.ini</code>, localize a linha com a extensão desejada e remova o <code>;</code> do
+          início:</p>
+        <p><code>extension=php_imap.dll</code></p>
+        <p>Reinicie o Apache. O mesmo processo vale para qualquer extensão desativada.</p>
+      </div>
+    </details>
+
+    <p class="section-label">Resolução de Problemas</p>
+
+    <details>
+      <summary>
+        <span class="summary-icon">⚠️</span>
+        <span class="summary-text">Por que o Apache não inicia?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Causas mais comuns:</p>
+        <ul>
+          <li>Outro serviço (IIS, Skype) ocupa a porta 80 — erro:
+            <code>make_sock: could not bind to address 0.0.0.0:80</code></li>
+          <li>Firewall bloqueando a porta.</li>
+          <li>Antivírus interferindo nas conexões.</li>
+        </ul>
+        <p><strong>Dica:</strong> use <code>xampp-portcheck.exe</code> para verificar conflitos de porta.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🪟</span>
+        <span class="summary-text">Como usar o XAMPP na porta 80 no Windows 10/11?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>O Windows pode iniciar o IIS na porta 80. Para desativar:</p>
+        <ol>
+          <li>Abra <strong>Gerenciamento do Computador → Serviços</strong>.</li>
+          <li>Localize <em>World Wide Web Publishing Service</em>.</li>
+          <li>Pare o serviço e mude o tipo de inicialização para <strong>Desabilitado</strong>.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">🦠</span>
+        <span class="summary-text">Meu antivírus detectou vírus no XAMPP — é real?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Provavelmente <strong>falso positivo</strong>. Arquivos como <code>xampp-manager.exe</code> são marcados
+          erroneamente por alguns antivírus. Todas as versões do XAMPP são verificadas com o Kaspersky Online Virus
+          Scanner antes do lançamento. Verifique também com o <a href="https://www.virustotal.com/"
+            target="_blank">Virus Total</a>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">📋</span>
+        <span class="summary-text">Onde ficam os arquivos de configuração?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <ul>
+          <li><strong>Apache:</strong> <code>\xampp\apache\conf\httpd.conf</code></li>
+          <li><strong>PHP:</strong> <code>\xampp\php\php.ini</code></li>
+          <li><strong>MySQL:</strong> <code>\xampp\mysql\bin\my.ini</code></li>
+          <li><strong>FileZilla:</strong> <code>\xampp\FileZillaFTP\FileZilla Server.xml</code></li>
+          <li><strong>Sendmail:</strong> <code>\xampp\sendmail\sendmail.ini</code></li>
+          <li><strong>Mercury:</strong> <code>\xampp\MercuryMail\MERCURY.INI</code></li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <span class="summary-icon">↔️</span>
+        <span class="summary-text">Posso mover a instalação do XAMPP?</span>
+        <span class="summary-chevron">▼</span>
+      </summary>
+      <div class="faq-body">
+        <p>Sim. Após mover o diretório, execute <code>setup_xampp.bat</code> para atualizar os caminhos. Se tiver
+          serviços Windows instalados, desinstale-os antes de mover e reinstale depois.</p>
+      </div>
+    </details>
+
+  </main>
+
+  <footer>
+    <span><a href="/dashboard/">← Início</a> · FAQ · XAMPP para Windows</span>
+    <span>Visual por <a href="https://github.com/icrcode" target="_blank">icrcode</a></span>
+  </footer>
+
+</body>
+
+</html>
